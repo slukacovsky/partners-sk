@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Turning strategic goals into KPI dashboards that track real progress and drive performance.</title>
+  <meta name="description" content="Turn Invisible Work into Measurable Performance. Business Intelligence Partners helps you build KPI dashboards that track real progress and drive performance." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ── Tokens ──────────────────────────────────────────── */
+    :root {
+      --yellow:     #ffeb69;
+      --dark:       #030e09;
+      --dark2:      #1a2a22;
+      --gray:       #4b5852;
+      --gray-light: #6b7c74;
+      --teal:       #79ffc6;
+      --white:      #ffffff;
+      --bg-light:   #f2f3f1;
+      --bg-card:    #eaebe9;
+      --border:     #dde0dd;
+      --font-main:  'Outfit', 'Inter', sans-serif;
+      --font-body:  'Inter', sans-serif;
+      --radius-lg:  20px;
+      --radius-xl:  28px;
+      --max-w:      1100px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--dark);
+      background: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Utilities ───────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 32px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ══════════════════════════════════════════════════════
+       NAV
+    ══════════════════════════════════════════════════════ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--dark);
+      font-family: var(--font-main);
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: -0.3px;
+    }
+    .nav__logo img { height: 36px; width: auto; }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav__link {
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 100px;
+      transition: background 0.18s;
+    }
+    .nav__link:hover { background: var(--bg-light); }
+    .nav__lang {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--dark);
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 100px;
+      border: none;
+      background: none;
+      transition: background 0.18s;
+    }
+    .nav__lang:hover { background: var(--bg-light); }
+    .nav__lang svg { width: 16px; height: 16px; }
+
+    /* ══════════════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════════════ */
+    .hero {
+      background: var(--yellow);
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      margin: 0 12px;
+      overflow: hidden;
+      padding: 64px 64px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: flex-end;
+      min-height: 600px;
+    }
+    .hero__left { padding-bottom: 64px; }
+    .hero__h1 {
+      font-family: var(--font-main);
+      font-size: clamp(42px, 5.5vw, 68px);
+      font-weight: 800;
+      line-height: 1.05;
+      color: var(--dark2);
+      letter-spacing: -2px;
+      margin-bottom: 28px;
+    }
+    .hero__sub {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--dark2);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .hero__body {
+      font-size: 15px;
+      color: var(--dark2);
+      line-height: 1.7;
+      opacity: 0.8;
+      max-width: 480px;
+    }
+    .hero__right {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .hero__photo {
+      width: 100%;
+      max-width: 480px;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      object-fit: cover;
+      display: block;
+    }
+    /* Floating cards */
+    .hero__card {
+      position: absolute;
+      background: white;
+      border-radius: 14px;
+      padding: 12px 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .hero__card--top {
+      top: 24px;
+      right: 0;
+      min-width: 160px;
+    }
+    .hero__card--performers {
+      bottom: 120px;
+      left: -20px;
+      min-width: 220px;
+    }
+    .hero__card--value {
+      bottom: 60px;
+      right: -10px;
+      min-width: 130px;
+    }
+    .card__label { color: var(--gray-light); font-size: 10px; font-weight: 500; margin-bottom: 6px; }
+    .card__title { color: var(--dark); font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .card__gauge {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: conic-gradient(#1a2a22 0% 71%, #e0e0e0 71%);
+      display: flex; align-items: center; justify-content: center;
+      margin: 6px auto;
+      position: relative;
+    }
+    .card__gauge::after {
+      content: '';
+      position: absolute;
+      width: 38px; height: 38px;
+      background: white;
+      border-radius: 50%;
+    }
+    .card__gauge-val {
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .card__row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .card__row:last-child { border-bottom: none; }
+    .card__avatar {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--bg-light);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .card__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .card__name { font-size: 10px; font-weight: 600; color: var(--dark); }
+    .card__role { font-size: 9px; color: var(--gray-light); }
+    .card__num { font-size: 10px; font-weight: 700; color: var(--dark); margin-left: auto; }
+    .card__trend { font-size: 9px; color: #22c55e; }
+
+    /* ══════════════════════════════════════════════════════
+       CLIENTS
+    ══════════════════════════════════════════════════════ */
+    .clients {
+      padding: 56px 0;
+      text-align: center;
+    }
+    .clients__label {
+      font-size: 14px;
+      color: var(--gray-light);
+      margin-bottom: 28px;
+      letter-spacing: 0.01em;
+    }
+    .clients__logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .clients__logo {
+      height: 28px;
+      width: auto;
+      object-fit: contain;
+      filter: grayscale(100%);
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .clients__logo:hover { opacity: 1; filter: none; }
+    /* Text fallbacks for logos */
+    .clients__logo-text {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--dark2);
+      letter-spacing: -0.5px;
+      opacity: 0.6;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       HIDDEN COST
+    ══════════════════════════════════════════════════════ */
+    .hidden-cost {
+      background: var(--bg-light);
+      border-radius: var(--radius-xl);
+      margin: 0 12px;
+      padding: 80px 64px;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .hidden-cost__left h2 {
+      font-family: var(--font-main);
+      font-size: clamp(34px, 4vw, 52px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      color: var(--dark);
+      margin-bottom: 16px;
+    }
+    .hidden-cost__left p {
+      font-size: 14px;
+      color: var(--gray);
+      margin-bottom: 36px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.18s, transform 0.18s;
+    }
+    .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn--dark { background: var(--dark2); color: white; }
+    .btn--teal { background: var(--teal); color: var(--dark); }
+    .btn--arrow::after { content: '→'; font-size: 16px; }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .pain-item {
+      background: var(--bg-light);
+      padding: 24px;
+    }
+    .pain-item__icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gray-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      font-size: 10px;
+      color: var(--gray-light);
+    }
+    .pain-item__title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .pain-item__body {
+      font-size: 13px;
+      color: var(--gray-light);
+      line-height: 1.5;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SYSTEM / FEATURES
+    ══════════════════════════════════════════════════════ */
+    .system {
+      padding: 100px 0 60px;
+    }
+    .system__header {
+      text-align: left;
+      margin-bottom: 56px;
+    }
+    .system__header h2 {
+      font-family: var(--font-main);
+      font-size: clamp(36px, 4.5vw, 60px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.06;
+      color: var(--dark);
+      margin-bottom: 14px;
+    }
+    .system__header p {
+      font-size: 14px;
+      color: var(--gray-light);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-top: 1px solid var(--border);
+    }
+    .feature-item {
+      padding: 40px 32px;
+      background: white;
+      border-left: 3px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .feature-item:first-child {
+      border-left-color: var(--dark2);
+    }
+    .feature-item__icon {
+      width: 32px;
+      height: 32px;
+      background: var(--dark2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+    .feature-item__icon svg { color: white; }
+    .feature-item__icon--outline {
+      background: none;
+      border: 1.5px solid var(--border);
+    }
+    .feature-item__title {
+      font-family: var(--font-main);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+    .feature-item__body {
+      font-size: 14px;
+      color: var(--gray-light);
+      line-height: 1.6;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       PRICING
+    ══════════════════════════════════════════════════════ */
+    .pricing {
+      padding: 80px 0;
+    }
+    .pricing__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+    .pricing-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+      background: white;
+    }
+    .pricing-card--hot {
+      border-color: var(--dark2);
+      border-width: 2px;
+    }
+    .pricing-card__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--yellow);
+      color: var(--dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .pricing-card__icon {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 16px;
+    }
+    .pricing-card__icon--check {
+      border: 2px solid var(--dark2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pricing-card__title {
+      font-family: var(--font-main);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+    .pricing-card__desc {
+      font-size: 13px;
+      color: var(--gray-light);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .pricing-card__price {
+      margin-bottom: 4px;
+    }
+    .pricing-card__amount {
+      font-family: var(--font-main);
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -1px;
+    }
+    .pricing-card__period {
+      font-size: 13px;
+      color: var(--gray-light);
+      margin-left: 4px;
+    }
+    .pricing-card__note {
+      font-size: 11px;
+      color: var(--gray-light);
+      margin-bottom: 24px;
+    }
+    .pricing-card__divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    .pricing-card__features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .pricing-card__feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.4;
+    }
+    .pricing-card__feature::before {
+      content: '✓';
+      color: var(--dark2);
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .btn--full { display: flex; width: 100%; justify-content: center; }
+    .btn--green { background: var(--teal); color: var(--dark); font-weight: 700; }
+
+    /* ══════════════════════════════════════════════════════
+       TESTIMONIALS
+    ══════════════════════════════════════════════════════ */
+    .testimonials {
+      padding: 60px 0 80px;
+    }
+    .testimonials__slider {
+      background: var(--bg-light);
+      border-radius: var(--radius-xl);
+      padding: 64px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .testimonials__track {
+      display: flex;
+      transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+    }
+    .testimonial {
+      flex: 0 0 100%;
+      text-align: center;
+    }
+    .testimonial__logo {
+      height: 24px;
+      width: auto;
+      object-fit: contain;
+      margin: 0 auto 28px;
+      display: block;
+    }
+    .testimonial__logo-text {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--dark);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .testimonial__quote {
+      font-family: var(--font-main);
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.45;
+      max-width: 720px;
+      margin: 0 auto 36px;
+    }
+    .testimonial__author {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .testimonial__avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .testimonial__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .testimonial__name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--dark);
+      text-align: left;
+    }
+    .testimonial__role {
+      font-size: 13px;
+      color: var(--gray-light);
+    }
+    .slider__nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 8px;
+    }
+    .slider__nav--left { left: 24px; }
+    .slider__nav--right { right: 24px; }
+    .slider__btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--dark2);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: opacity 0.18s;
+    }
+    .slider__btn:hover { opacity: 0.8; }
+
+    /* ══════════════════════════════════════════════════════
+       EXPERIENCED
+    ══════════════════════════════════════════════════════ */
+    .experienced {
+      padding: 0 0 80px;
+    }
+    .experienced__inner {
+      background: var(--bg-light);
+      border-radius: var(--radius-xl);
+      margin: 0 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      min-height: 560px;
+    }
+    .experienced__left {
+      padding: 60px;
+    }
+    .experienced__left h2 {
+      font-family: var(--font-main);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      color: var(--dark);
+      margin-bottom: 20px;
+    }
+    .experienced__lead {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark2);
+      margin-bottom: 8px;
+    }
+    .experienced__body {
+      font-size: 14px;
+      color: var(--gray-light);
+      line-height: 1.65;
+      margin-bottom: 36px;
+    }
+    .experienced__section-title {
+      font-family: var(--font-main);
+      font-size: clamp(22px, 2.5vw, 32px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--dark);
+      margin-bottom: 20px;
+    }
+    .experienced__point {
+      margin-bottom: 20px;
+    }
+    .experienced__point-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .experienced__point-body {
+      font-size: 13px;
+      color: var(--gray-light);
+      line-height: 1.6;
+    }
+    .experienced__quote {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .experienced__quote-text {
+      font-family: var(--font-main);
+      font-size: 15px;
+      font-style: italic;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .experienced__quote-author {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .experienced__quote-role {
+      font-size: 12px;
+      color: var(--gray-light);
+    }
+    .experienced__right {
+      position: relative;
+      overflow: hidden;
+    }
+    .experienced__right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       TEAM
+    ══════════════════════════════════════════════════════ */
+    .team {
+      padding: 80px 0;
+    }
+    .team__header {
+      margin-bottom: 48px;
+    }
+    .team__header h2 {
+      font-family: var(--font-main);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      color: var(--dark);
+      margin-bottom: 0;
+    }
+    .team__slider-wrap {
+      position: relative;
+    }
+    .team__slider {
+      background: var(--bg-light);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+    .team__track {
+      display: flex;
+      transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+    }
+    .team__slide {
+      flex: 0 0 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 400px;
+    }
+    .team__slide-content {
+      padding: 56px;
+    }
+    .team__name {
+      font-family: var(--font-main);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .team__role {
+      font-size: 14px;
+      color: var(--gray-light);
+      margin-bottom: 24px;
+    }
+    .team__bio {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .team__stats {
+      display: flex;
+      gap: 32px;
+    }
+    .team__stat-val {
+      font-family: var(--font-main);
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -1px;
+    }
+    .team__stat-label {
+      font-size: 12px;
+      color: var(--gray-light);
+    }
+    .team__slide-photo {
+      position: relative;
+      overflow: hidden;
+    }
+    .team__slide-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .team__nav {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       TECHNOLOGIES
+    ══════════════════════════════════════════════════════ */
+    .tech {
+      padding: 0 12px 80px;
+    }
+    .tech__inner {
+      background: var(--dark2);
+      border-radius: var(--radius-xl);
+      padding: 64px;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .tech__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 20px;
+    }
+    .tech__h2 {
+      font-family: var(--font-main);
+      font-size: clamp(30px, 3.5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      color: white;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    .tech__list {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .tech__note {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+    }
+    .tech__logos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .tech__logo-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .tech__logo-card img {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
+    }
+    .tech__logo-card-label {
+      font-size: 11px;
+      color: var(--gray-light);
+      font-weight: 500;
+    }
+    .tech__logo-card--multi {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .tech__pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      margin: 4px;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════ */
+    .footer {
+      background: var(--bg-light);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      margin: 0 12px;
+      padding: 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: end;
+    }
+    .footer__left {}
+    .footer__logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      text-decoration: none;
+    }
+    .footer__logo img { height: 36px; }
+    .footer__tagline {
+      font-size: 15px;
+      color: var(--dark2);
+      font-weight: 500;
+      margin-bottom: 20px;
+      max-width: 300px;
+      line-height: 1.5;
+    }
+    .footer__company {
+      font-size: 13px;
+      color: var(--gray-light);
+      line-height: 1.7;
+    }
+    .footer__socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .footer__social {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--dark2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: opacity 0.18s;
+    }
+    .footer__social:hover { opacity: 0.7; }
+    .footer__social svg { width: 16px; height: 16px; fill: white; }
+    .footer__right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
+    .footer__dashboard {
+      max-width: 400px;
+      width: 100%;
+      border-radius: 12px;
+      object-fit: contain;
+    }
+    .footer__bottom {
+      background: var(--bg-light);
+      margin: 0 12px;
+      padding: 20px 64px 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--gray-light);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 48px 32px 0; min-height: auto; }
+      .hero__right { display: none; }
+      .hero__left { padding-bottom: 48px; }
+      .hidden-cost { grid-template-columns: 1fr; padding: 48px 32px; }
+      .pain-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing__grid { grid-template-columns: 1fr; }
+      .experienced__inner { grid-template-columns: 1fr; }
+      .experienced__right { height: 300px; }
+      .team__slide { grid-template-columns: 1fr; }
+      .team__slide-photo { height: 280px; }
+      .tech__inner { grid-template-columns: 1fr; }
+      .footer { grid-template-columns: 1fr; }
+      .footer__right { justify-content: flex-start; }
+      .testimonials__slider { padding: 48px 32px; }
+      .container { padding: 0 20px; }
+      .hero { margin: 0 8px; }
+      .hidden-cost { margin: 0 8px; }
+      .tech { padding: 0 8px 60px; }
+      .footer { margin: 0 8px; }
+      .footer__bottom { margin: 0 8px; padding: 16px 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     NAV
+════════════════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/" class="nav__logo">
+        <img src="assets/images/9goUU5SCmJvViFQFlsoPTHlmHU.svg" alt="partners.sk logo" style="height:32px;width:auto;" onerror="this.style.display='none'" />
+      partners.sk
+    </a>
+    <div class="nav__links">
+      <a href="#pricing" class="nav__link">Packages &amp; Pricing</a>
+      <a href="#talkto" class="nav__link">Talk to an expert</a>
+      <button class="nav__lang" onclick="toggleLang()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2c-2.5 3-4 6.5-4 10s1.5 7 4 10M12 2c2.5 3 4 6.5 4 10s-1.5 7-4 10"/></svg>
+        English
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero__left">
+    <h1 class="hero__h1">Turn Invisible Work into Measurable Performance</h1>
+    <p class="hero__sub">When performance is visible to everyone, teams own results—without micromanagement.</p>
+    <p class="hero__body">Many leadership teams struggle not because people don't work, but because performance isn't clearly visible or owned.<br><br>The Performance Loop Dashboard gives a shared, objective view of the metrics that matter in your business, who owns them, and how they evolve over time—so teams take responsibility and leaders can focus on growth instead of firefighting.</p>
+  </div>
+  <div class="hero__right">
+    <!-- Main photo -->
+    <img
+      class="hero__photo"
+      src="assets/images/gNNYG09aQ40b9Sr6bYrmvOalDA.jpg"
+      alt="Business leader"
+    />
+    <!-- Floating: Current Month -->
+    <div class="hero__card hero__card--top" style="text-align:center;">
+      <div class="card__label">See All &nbsp; Current Month</div>
+      <div class="card__gauge">
+        <span class="card__gauge-val">71%</span>
+      </div>
+      <div class="card__label" style="margin-top:4px;">Workload Forecast</div>
+    </div>
+    <!-- Floating: Top Performers -->
+    <div class="hero__card hero__card--performers">
+      <div class="card__title">Top Performers</div>
+      <div class="card__row">
+        <div class="card__avatar"></div>
+        <div><div class="card__name">Martin T.</div><div class="card__role">Associate</div></div>
+        <div class="card__num">13.58<br><span class="card__trend">↑ 5,580</span></div>
+      </div>
+      <div class="card__row">
+        <div class="card__avatar"></div>
+        <div><div class="card__name">Eliška W.</div><div class="card__role">Associate</div></div>
+        <div class="card__num">11.98<br><span class="card__trend">↑ 4,955</span></div>
+      </div>
+      <div class="card__row">
+        <div class="card__avatar"></div>
+        <div><div class="card__name">Mária E.</div><div class="card__role">Associate</div></div>
+        <div class="card__num">11.01<br><span class="card__trend">↑ 4,510</span></div>
+      </div>
+    </div>
+    <!-- Floating: Value Delivered -->
+    <div class="hero__card hero__card--value" style="text-align:center;">
+      <div class="card__label">Value Delivered</div>
+      <div style="font-size:28px;font-weight:800;color:var(--dark);margin:4px 0;">25</div>
+      <div style="font-size:10px;color:#22c55e;font-weight:600;">+5 | 25% ▲</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     CLIENTS
+════════════════════════════════════════════ -->
+<section class="clients">
+  <div class="container">
+    <p class="clients__label">Relied upon by countless minor and major businesses across different sectors</p>
+    <div class="clients__logos">
+      <!-- CBRE -->
+      <span class="clients__logo-text" style="color:#006a4d;font-size:22px;letter-spacing:-1px;">CBRE</span>
+      <!-- Petit Press -->
+      <span class="clients__logo-text" style="font-size:15px;font-weight:700;letter-spacing:1px;">PETIT PRESS</span>
+      <!-- Additional logos - add src when images are available -->
+      <img src="assets/images/logo-client3.png" class="clients__logo" alt="Client" onerror="this.style.display='none'" />
+      <img src="assets/images/logo-client4.png" class="clients__logo" alt="Client" onerror="this.style.display='none'" />
+      <!-- Ford -->
+      <span class="clients__logo-text" style="font-family:serif;font-size:20px;font-weight:700;">Ford</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     HIDDEN COST
+════════════════════════════════════════════ -->
+<section class="hidden-cost">
+  <div class="hidden-cost__left">
+    <h2>The Hidden Cost of Invisible Performance</h2>
+    <p>What happens when performance stays invisible</p>
+    <a href="#booking" class="btn btn--dark btn--arrow">Schedule a 15-min. Assessment</a>
+  </div>
+  <div class="hidden-cost__right">
+    <div class="pain-grid">
+      <div class="pain-item">
+        <div class="pain-item__icon">!</div>
+        <div class="pain-item__title">Concentration Risk</div>
+        <div class="pain-item__body">A few top performers carry the load while others disengage</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item__icon">!</div>
+        <div class="pain-item__title">Management Drag</div>
+        <div class="pain-item__body">Management time is spent chasing activity instead of leading</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item__icon">!</div>
+        <div class="pain-item__title">Stalled Growth</div>
+        <div class="pain-item__body">Growth stalls because effort doesn't translate into results</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item__icon">!</div>
+        <div class="pain-item__title">Hidden Talent Cost</div>
+        <div class="pain-item__body">Underperformance quietly turns into turnover and rehiring costs</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item__icon">!</div>
+        <div class="pain-item__title">Ownership Vacuum</div>
+        <div class="pain-item__body">Teams get stuck in a cycle of low ownership and low momentum</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item__icon">!</div>
+        <div class="pain-item__title">Leadership Burn</div>
+        <div class="pain-item__body">Leaders compensate with constant oversight, burning time and energy</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SYSTEM / FEATURES
+════════════════════════════════════════════ -->
+<section class="system">
+  <div class="container">
+    <div class="system__header">
+      <h2>A System That Makes Accountability Natural</h2>
+      <p>Turn visibility into ownership—and results—without micromanagement</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-item__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="feature-item__title">Create ownership through clarity</div>
+        <div class="feature-item__body">When expectations are measurable and shared, teams regulate themselves.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-item__icon feature-item__icon--outline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2a22" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="feature-item__title">Metrics that matter in your business</div>
+        <div class="feature-item__body">No generic KPIs. Focus on the signals that actually drive outcomes.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-item__icon feature-item__icon--outline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2a22" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="feature-item__title">Move fast from insight to impact</div>
+        <div class="feature-item__body">Custom-built dashboards deployed quickly, so improvement starts now—not next quarter.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     PRICING
+════════════════════════════════════════════ -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="pricing__grid">
+
+      <!-- Card 1: Professional Guidance -->
+      <div class="pricing-card">
+        <div class="pricing-card__icon pricing-card__icon--check">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="pricing-card__title">Professional Guidance</div>
+        <div class="pricing-card__desc">For businesses seeking quick wins and expert advice.</div>
+        <div class="pricing-card__price">
+          <span class="pricing-card__amount">€500</span>
+          <span class="pricing-card__period">/per session</span>
+        </div>
+        <hr class="pricing-card__divider" />
+        <ul class="pricing-card__features">
+          <li class="pricing-card__feature">3 hrs workshop with an Expert</li>
+          <li class="pricing-card__feature">Digital Maturity Assessment</li>
+          <li class="pricing-card__feature">List of recommendations</li>
+          <li class="pricing-card__feature">Strategy roadmap</li>
+        </ul>
+        <a href="https://outlook.office365.com/book/partnerssk@partners.sk/" class="btn btn--green btn--full" target="_blank" rel="noopener">
+          Get Started
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 2: Performance Loop Dashboards -->
+      <div class="pricing-card">
+        <div style="margin-bottom:16px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            <circle cx="18" cy="5" r="2"/>
+          </svg>
+        </div>
+        <div class="pricing-card__title">Performance Loop Dashboards</div>
+        <div class="pricing-card__desc">Elevate your operations with actionable insights.</div>
+        <div class="pricing-card__price">
+          <span class="pricing-card__amount">€6 500</span>
+        </div>
+        <div class="pricing-card__note">pay once &nbsp;·&nbsp; use forever</div>
+        <hr class="pricing-card__divider" />
+        <ul class="pricing-card__features">
+          <li class="pricing-card__feature">KPIs &amp; Operational Intelligence</li>
+          <li class="pricing-card__feature">Integration with your system</li>
+          <li class="pricing-card__feature">Process Mining with insights</li>
+          <li class="pricing-card__feature">4 detailed views full of insights</li>
+          <li class="pricing-card__feature">Tailored to your business</li>
+        </ul>
+        <a href="#booking" class="btn btn--dark btn--full btn--arrow">Schedule 15min. Assessment</a>
+      </div>
+
+      <!-- Card 3: Performance & Innovation Partnership -->
+      <div class="pricing-card pricing-card--hot">
+        <div class="pricing-card__badge">⚡ Hot Package</div>
+        <div class="pricing-card__title">Performance &amp; Innovation Partnership</div>
+        <div class="pricing-card__desc">Build a performance-driven culture with continuous improvement.</div>
+        <div class="pricing-card__price">
+          <span class="pricing-card__amount">€11 500</span>
+          <span class="pricing-card__period">/per year</span>
+        </div>
+        <hr class="pricing-card__divider" />
+        <ul class="pricing-card__features">
+          <li class="pricing-card__feature">Everything from Performance Loop Dashboards</li>
+          <li class="pricing-card__feature">Ongoing performance support</li>
+          <li class="pricing-card__feature">Continuous refinement of metrics and dashboards</li>
+          <li class="pricing-card__feature">Support for performance and innovation initiatives</li>
+          <li class="pricing-card__feature">A system that compounds over time</li>
+        </ul>
+        <a href="#booking" class="btn btn--dark btn--full btn--arrow">Schedule 15min. Assessment</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════════ -->
+<section class="testimonials">
+  <div class="container">
+    <div class="testimonials__slider">
+      <div class="testimonials__track" id="testimonialTrack">
+
+        <!-- Slide 1 -->
+        <div class="testimonial">
+          <div class="testimonial__logo-text">PETIT PRESS</div>
+          <blockquote class="testimonial__quote">
+            "In just a few weeks, you transformed our understanding of our sales force's performance. The second sprint was a game-changer, giving us actionable insights that have directly boosted our revenue."
+          </blockquote>
+          <div class="testimonial__author">
+            <div class="testimonial__avatar">
+              <img src="assets/images/QudpzCWYG6Tkaz8VfdDo6ezubrI.jpg" alt="Peter Kuna" />
+            </div>
+            <div>
+              <div class="testimonial__name">Peter Kuna</div>
+              <div class="testimonial__role">CEO dovolenka.sme.sk</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="testimonial">
+          <div class="testimonial__logo-text" style="font-size:14px;font-weight:600;color:var(--gray-light);">City of Bratislava</div>
+          <blockquote class="testimonial__quote">
+            "Partnering with Martin Lukačovský's team allowed us to deliver world-class dashboards for financial planning and city operations, increasing revenue, cutting costs, and transforming decision-making for Bratislava."
+          </blockquote>
+          <div class="testimonial__author">
+            <div class="testimonial__avatar"></div>
+            <div>
+              <div class="testimonial__name">Martin Vavrek</div>
+              <div class="testimonial__role">Deputy City Manager at Bratislava</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="testimonial">
+          <div class="testimonial__logo-text" style="font-size:14px;font-weight:600;color:var(--gray-light);">AT&amp;T</div>
+          <blockquote class="testimonial__quote">
+            "It was a pleasure to work with Martin on pioneering Business Intelligence reporting. We transformed the organization from reactive firefighting into a proactive and data intuitive future-oriented work-centre."
+          </blockquote>
+          <div class="testimonial__author">
+            <div class="testimonial__avatar"></div>
+            <div>
+              <div class="testimonial__name">George Evans</div>
+              <div class="testimonial__role">Director, Global PM, AT&amp;T</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- Nav buttons -->
+      <div class="slider__nav slider__nav--left">
+        <button class="slider__btn" onclick="testimonialPrev()" aria-label="Previous">&#8592;</button>
+      </div>
+      <div class="slider__nav slider__nav--right">
+        <button class="slider__btn" onclick="testimonialNext()" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     EXPERIENCED WHERE IT MATTERS
+════════════════════════════════════════════ -->
+<section class="experienced" id="talkto">
+  <div class="experienced__inner">
+    <div class="experienced__left">
+      <h2>Experienced Where It Matters</h2>
+      <p class="experienced__lead">We've led organizations through the same challenges you're facing—so we focus on what actually works.</p>
+      <p class="experienced__body">Our work is shaped by decades of executive leadership and hands-on transformation experience. We know how performance breaks down in real organizations—and how to fix it without adding complexity.</p>
+
+      <div class="experienced__section-title">What That Means for You</div>
+      <div class="experienced__point">
+        <div class="experienced__point-title">Executive Perspective</div>
+        <div class="experienced__point-body">Our founders have led transformation initiatives inside complex organizations—not as advisors on the sidelines, but as leaders accountable for results.</div>
+      </div>
+      <div class="experienced__point">
+        <div class="experienced__point-title">Proven in Practice</div>
+        <div class="experienced__point-body">We've designed and implemented performance systems across different industries, adapting to real constraints, real data, and real teams.</div>
+      </div>
+
+      <a href="#booking" class="btn btn--dark btn--arrow" style="margin-top:8px;">Book 15 min. Discovery Call</a>
+
+      <div class="experienced__quote">
+        <div class="experienced__quote-text">"Our role is simple: help you see clearly, decide confidently, and lead with credibility."</div>
+        <div class="experienced__quote-author">Martin Lukačovský</div>
+        <div class="experienced__quote-role">Co-founder of partners.sk, ex-Director of Digital Transformation at AT&amp;T</div>
+      </div>
+    </div>
+    <div class="experienced__right">
+      <img src="assets/images/kP30XlhyvIA3L4eahEoicdQx8.jpg" alt="Expert" />
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     TEAM
+════════════════════════════════════════════ -->
+<section class="team">
+  <div class="container">
+    <div class="team__header" style="display:flex;align-items:center;justify-content:space-between;">
+      <h2>Actionable insights powered by deep expertise</h2>
+      <div class="team__nav">
+        <button class="slider__btn" onclick="teamPrev()" aria-label="Previous">&#8592;</button>
+        <button class="slider__btn" onclick="teamNext()" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+    <div class="team__slider-wrap">
+      <div class="team__slider">
+        <div class="team__track" id="teamTrack">
+
+          <!-- Slide 1: Braňo -->
+          <div class="team__slide">
+            <div class="team__slide-content">
+              <div class="team__name">Braňo Kmeť</div>
+              <div class="team__role">Partner, Expert on Sales Strategy</div>
+              <p class="team__bio">Brano is an experienced business strategist with over 20 years of practice in driving business growth and transforming sales processes. He specializes in business transformation, sales crisis management, and helps companies leverage artificial intelligence (AI) in sales. Thanks to his expertise, companies are able to modernize their sales strategies, streamline processes, and achieve better results even during challenging times.</p>
+              <div class="team__stats">
+                <div>
+                  <div class="team__stat-val">20+</div>
+                  <div class="team__stat-label">Years of experience</div>
+                </div>
+              </div>
+            </div>
+            <div class="team__slide-photo">
+              <img src="assets/images/05nkNiUykRtwQB4GH0OnjABmt90.png" alt="Braňo Kmeť" />
+            </div>
+          </div>
+
+          <!-- Slide 2: Samuel -->
+          <div class="team__slide">
+            <div class="team__slide-content">
+              <div class="team__name">Samuel Lukacovsky</div>
+              <div class="team__role">Founding Partner, Expert on Advanced Data Analytics</div>
+              <p class="team__bio">Samuel is a business data expert and entrepreneur with deep expertise in transforming data into strategic assets for growth and efficiency. With years of experience across corporate and entrepreneurial settings, he helps companies unlock the full value of their data through advanced analytics, process automation, and system integration. Whether it's revitalizing stalled growth or optimizing operations, Samuel enables mid-sized firms and startups alike to make faster, smarter decisions supported by clear, actionable insights.</p>
+              <div class="team__stats">
+                <div>
+                  <div class="team__stat-val">10+</div>
+                  <div class="team__stat-label">Years of experience</div>
+                </div>
+                <div>
+                  <div class="team__stat-val">120+</div>
+                  <div class="team__stat-label">Completed projects</div>
+                </div>
+                <div>
+                  <div class="team__stat-val">5</div>
+                  <div class="team__stat-label">Industries served</div>
+                </div>
+              </div>
+            </div>
+            <div class="team__slide-photo">
+              <img src="assets/images/jS3Q0QWXOUT6uvKaDtyE3lYYtK8.jpg" alt="Samuel Lukacovsky" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     TECHNOLOGIES
+════════════════════════════════════════════ -->
+<section class="tech">
+  <div class="tech__inner">
+    <div>
+      <div class="tech__tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Our toolkit
+      </div>
+      <h2 class="tech__h2">Technologies we<br>love to use</h2>
+      <p class="tech__list">Microsoft Fabric, Python, Dynamics 365, Odoo, Process Mining libraries, MS SQL, PostgreSQL, Microsoft Azure</p>
+      <p class="tech__list">…and a few others</p>
+      <p class="tech__note">Our solutions ensure you're never locked in. Everything is fully customizable and designed to put control in your hands.</p>
+    </div>
+    <div>
+      <div class="tech__logos">
+        <!-- Main dashboard card -->
+        <div class="tech__logo-card" style="grid-column:1; display:flex;flex-direction:column;gap:12px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="text-align:center;padding:8px;">
+              <div style="font-size:24px;">🏛️</div>
+              <div style="font-size:10px;color:var(--gray-light);margin-top:4px;">Data Warehouse</div>
+            </div>
+            <div style="text-align:center;padding:8px;">
+              <div style="font-size:24px;">🔬</div>
+              <div style="font-size:10px;color:var(--gray-light);margin-top:4px;">Data Science</div>
+            </div>
+            <div style="text-align:center;padding:8px;">
+              <div style="font-size:24px;">📊</div>
+              <div style="font-size:10px;color:var(--gray-light);margin-top:4px;">Power BI</div>
+            </div>
+            <div style="text-align:center;padding:8px;">
+              <div style="font-size:24px;">⚡</div>
+              <div style="font-size:10px;color:var(--gray-light);margin-top:4px;">Real-Time Intelligence</div>
+            </div>
+            <div style="text-align:center;padding:8px;">
+              <div style="font-size:24px;">🏭</div>
+              <div style="font-size:10px;color:var(--gray-light);margin-top:4px;">Data Factory</div>
+            </div>
+            <div style="text-align:center;padding:8px;">
+              <div style="font-size:24px;">⚙️</div>
+              <div style="font-size:10px;color:var(--gray-light);margin-top:4px;">Data Engineering</div>
+            </div>
+          </div>
+        </div>
+        <!-- Right side pills -->
+        <div style="display:flex;flex-direction:column;gap:16px;justify-content:center;">
+          <div class="tech__logo-card tech__logo-card--multi">
+            <span style="font-weight:700;color:#0078d4;font-size:13px;">A</span>
+            <img src="assets/images/tech-postgresql.svg" alt="PostgreSQL" style="height:24px;" onerror="this.style.display='none'" />
+            <span style="font-size:12px;font-weight:600;color:#4169E1;">python</span>
+          </div>
+          <div class="tech__logo-card tech__logo-card--multi">
+            <span style="font-size:12px;font-weight:700;color:#5C4A8A;">odoo</span>
+            <span style="font-size:12px;font-weight:700;color:#0078d4;">Dynamics 365</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     BOOKING (anchor target)
+════════════════════════════════════════════ -->
+<div id="booking" style="height:1px;"></div>
+
+<!-- ════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer__left">
+    <a href="/" class="footer__logo">
+      <img src="assets/images/9goUU5SCmJvViFQFlsoPTHlmHU.svg" alt="partners.sk" style="height:32px;width:auto;" />
+      <span style="font-family:var(--font-main);font-weight:700;font-size:16px;color:var(--dark);">partners.sk</span>
+    </a>
+    <p class="footer__tagline">If performance feels hard to manage, visibility is the right place to start.</p>
+    <div class="footer__company">
+      Business Intelligence Partners s. r. o.<br>
+      Vajnorská 94, Bratislava, Slovakia<br>
+      IČO: 50907450 &nbsp;|&nbsp; DIČ: 2120527035
+    </div>
+    <div class="footer__socials">
+      <!-- LinkedIn -->
+      <a href="https://linkedin.com" target="_blank" rel="noopener" class="footer__social" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <!-- Email -->
+      <a href="mailto:info@partners.sk" class="footer__social" aria-label="Email">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="footer__right">
+    <img
+      src="assets/images/9jBKrX9CTDzSgbguNwgPROkZe9o.png"
+      alt="KPI Dashboard"
+      class="footer__dashboard"
+    />
+  </div>
+</footer>
+<div class="footer__bottom">
+  <span>© 2025 Business Intelligence Partners s. r. o.</span>
+  <span><a href="privacy.html" style="color:inherit;text-decoration:none;">Privacy Policy</a> &nbsp;·&nbsp; <a href="terms.html" style="color:inherit;text-decoration:none;">Terms</a></span>
+</div>
+
+<!-- ════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════ -->
+<script>
+  /* ── Testimonial slider ─────────────────── */
+  let tIdx = 0;
+  const tTrack = document.getElementById('testimonialTrack');
+  const tSlides = tTrack.children.length;
+  function testimonialGo(n) {
+    tIdx = (n + tSlides) % tSlides;
+    tTrack.style.transform = `translateX(-${tIdx * 100}%)`;
+  }
+  function testimonialNext() { testimonialGo(tIdx + 1); }
+  function testimonialPrev() { testimonialGo(tIdx - 1); }
+
+  /* Auto-advance every 6s */
+  setInterval(testimonialNext, 6000);
+
+  /* ── Team slider ────────────────────────── */
+  let teamIdx = 0;
+  const teamTrack = document.getElementById('teamTrack');
+  const teamSlides = teamTrack.children.length;
+  function teamGo(n) {
+    teamIdx = (n + teamSlides) % teamSlides;
+    teamTrack.style.transform = `translateX(-${teamIdx * 100}%)`;
+  }
+  function teamNext() { teamGo(teamIdx + 1); }
+  function teamPrev() { teamGo(teamIdx - 1); }
+
+  /* ── Language toggle (stub) ─────────────── */
+  function toggleLang() {
+    const current = document.documentElement.lang;
+    if (current === 'en') {
+      window.location.href = '/sk/';
+    }
+  }
+
+  /* ── Scroll animations ──────────────────── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.pricing-card, .pain-item, .feature-item, .team__slide-content').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
